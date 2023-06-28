@@ -14,3 +14,14 @@ form input {
     height:30px;
     border:0;
 }
+
+form button {
+    width:100px;
+    height:30px;
+    background:green;
+    color:white;
+    border:1px solid black;
+    cursor:pointer;
+    border-radius:3px;
+}
+

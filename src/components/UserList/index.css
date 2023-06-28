@@ -1,0 +1,11 @@
+
+table {
+    width:600px;
+    height:30px;
+    border-spacing:0;
+}
+
+table tr {
+    background:black;
+    text-align: left;
+}

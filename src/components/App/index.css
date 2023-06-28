@@ -4,16 +4,19 @@
 }
 
 body {
-    background: #14162d;
+    background: #162a46;
     color:white;
+}
+
+#root {
     display:flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     margin-top: 100px;
+    gap:30px;
 }
 
 h1 {
     text-align: center;
-    margin-bottom:20px;
 }
