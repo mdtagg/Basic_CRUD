@@ -1,5 +1,5 @@
 
-import './App.css'
+import './index.css'
 import UserInputs from '../UserInputs'
 import UserList from '../UserList'
 
