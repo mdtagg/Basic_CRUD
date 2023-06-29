@@ -10,10 +10,31 @@ table thead {
     text-align: left;
 }
 
+tr {
+    height:35px;
+}
+
 tbody tr:nth-child(odd) {
     background: rgb(76, 76, 76);
 }
 
 tbody tr:nth-child(even) {
     background:black;
+}
+
+td input {
+    width:140px;
+}
+
+.table-head {
+    height:40px;
+}
+
+.edit-button {
+    background: orange;
+    margin-right:5px;
+}
+
+.delete-button {
+    background: red;
 }

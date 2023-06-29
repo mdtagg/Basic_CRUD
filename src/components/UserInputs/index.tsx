@@ -1,7 +1,14 @@
 import './index.css'
 import { useState } from 'react'
+// import { handleChange } from '../App/utils/handleInputChange'
 
 interface UserInputsProps {
+    // firstName:string 
+    // setFirstName:React.Dispatch<React.SetStateAction<string>>
+    // lastName:string 
+    // setLastName:React.Dispatch<React.SetStateAction<string>>
+    // email:string 
+    // setEmail:React.Dispatch<React.SetStateAction<string>>
     setUsers:React.Dispatch<React.SetStateAction<any[]>>
 }
 
@@ -13,7 +20,7 @@ const UserInputs = (props:UserInputsProps) => {
     const [ lastName,setLastName ] = useState('')
     const [ email,setEmail ] = useState('')
 
-    console.log(firstName,lastName,email)
+    // console.log(firstName,lastName,email)
 
     const handleChange = (e:React.ChangeEvent<HTMLInputElement>) => {
         const { value, name } = e.target

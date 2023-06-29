@@ -20,3 +20,9 @@ body {
 h1 {
     text-align: center;
 }
+
+button {
+    cursor:pointer;
+    border:2px solid black;
+    color:white;
+}
