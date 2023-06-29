@@ -5,7 +5,7 @@ table {
     border-spacing:0;
 }
 
-table tr {
+table thead {
     background:black;
     text-align: left;
 }

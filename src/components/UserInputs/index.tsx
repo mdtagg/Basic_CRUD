@@ -1,15 +1,84 @@
 import './index.css'
+import { useState } from 'react'
 
-const UserInputs = () => {
+interface UserInputsProps {
+    setUsers:React.Dispatch<React.SetStateAction<any[]>>
+}
+
+const UserInputs = (props:UserInputsProps) => {
+
+    const { setUsers } = props
+
+    const [ firstName,setFirstName ] = useState('')
+    const [ lastName,setLastName ] = useState('')
+    const [ email,setEmail ] = useState('')
+
+    console.log(firstName,lastName,email)
+
+    const handleChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+        const { value, name } = e.target
+        switch(name) {
+            case 'first name':
+                setFirstName(value)
+                break
+            case 'last name':
+                setLastName(value)
+                break 
+            case 'email':
+                setEmail(value)
+                break
+        }
+    }
+
+    const handleOnSubmit = (e:React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+        setUsers((prev) => {
+            return [
+                ...prev,
+                {firstName,lastName,email}
+            ]
+        })
+        setFirstName('')
+        setLastName('')
+        setEmail('')
+    }
+
     return (
-        <form>
+        <form 
+            onSubmit={(e) => handleOnSubmit(e)}
+        >
             <label htmlFor="fName">First Name</label>
-            <input id="fName" type="text" placeholder='Enter your first name'></input>
+            <input 
+                id="fName" 
+                type="text" 
+                placeholder='Enter your first name'
+                name="first name"
+                value={firstName}
+                onChange={(e) => handleChange(e)}
+            ></input>
             <label htmlFor="lName">Last Name</label>
-            <input id="lName" type="text" placeholder='Enter your last name'></input>
+            <input 
+                id="lName" 
+                type="text" 
+                placeholder='Enter your last name'
+                name="last name"
+                value={lastName}
+                onChange={(e) => handleChange(e)}
+
+            ></input>
             <label htmlFor="email">Email</label>
-            <input id="email" type='email' placeholder='Enter your email'></input>
-            <button>Submit</button>
+            <input 
+                id="email" 
+                type='email' 
+                placeholder='Enter your email'
+                name="email"
+                value={email}
+                onChange={(e) => handleChange(e)}
+
+            ></input>
+            <button
+                type='submit'
+            >Submit</button>
         </form>
     )
 }
