@@ -13,9 +13,7 @@ const UserList = (props:UserListProps) => {
     const { users,setUsers } = props
 
     const [ currentInput,setCurrentInput ] = useState<null  | React.MutableRefObject<null>>(null)
-    const [ userFirstName,setUserFirstName ] = useState('')
-    const [ userLastName,setUserLastName ] = useState('')
-    const [ userEmail, setUserEmail ] = useState('')
+    const [ cancel,setCancel ] = useState(users)
     
     const firstNameRef = useRef(null)
     const lastNameRef = useRef(null)
@@ -33,19 +31,45 @@ const UserList = (props:UserListProps) => {
 
     const handleChange = (e:React.ChangeEvent<HTMLInputElement>) => {
         const { value, name } = e.target
-        switch(name) {
-            case 'first name':
-                setUserFirstName(value)
-                setCurrentInput(firstNameRef)
-                break
-            case 'last name':
-                setUserLastName(value)
-                setCurrentInput(lastNameRef)
-                break
-            case 'email':
-                setUserEmail(value)
-                setCurrentInput(emailRef)
-        }
+        const { id } = e.target.dataset
+
+        name === 'first name' ? setCurrentInput(firstNameRef) :
+        name === 'last name' ? setCurrentInput(lastNameRef) :
+        setCurrentInput(emailRef)
+
+        setUsers(users.map(user => {
+            if(user.id === id && name === 'first name') {
+                user.firstName = value
+            }else if(user.id === id && name === 'last name') {
+                user.lastName = value
+            }else if(user.id === id && name === 'email') {
+                user.email = value
+            }
+            return user
+        }))
+    }
+
+    const handleDelete = (e:React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        const target = e.target as HTMLButtonElement
+        const { id } = target.dataset
+        const filteredUsers = users.filter(user => user.id !== id)
+        setUsers(filteredUsers)
+    }
+
+    const handleSubmit = (e:React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        const target = e.target as HTMLButtonElement
+        const { id } = target.dataset
+        setUsers(users.map(user => {
+            if(user.id === id) {
+                user.edit = false
+            }
+            return user
+        }))
+        setCurrentInput(null)
+    }
+
+    const handleCancel = () => {
+
     }
 
     useEffect(() => {
@@ -53,7 +77,7 @@ const UserList = (props:UserListProps) => {
         const currentInputElement = currentInput.current as unknown as HTMLInputElement
         console.log(currentInputElement)
         currentInputElement.focus()
-    },[userFirstName,userLastName,userEmail])
+    },[users])
 
     return (
         <table>
@@ -82,15 +106,20 @@ const UserList = (props:UserListProps) => {
                                     >
                                         Edit
                                     </button>
-                                    <button className="delete-button">Delete</button>
+                                    <button 
+                                        className="delete-button"
+                                        onClick={handleDelete}
+                                        data-id={user.id}
+                                    >
+                                        Delete
+                                    </button>
                                 </td>
                             </> :
                             <>
                                 <td>
                                     <input 
                                         name="first name" 
-                                        placeholder={user.firstName} 
-                                        value={userFirstName === '' ? user.firstName : userFirstName} 
+                                        value={user.firstName} 
                                         onChange={handleChange}
                                         data-id={user.id}
                                         ref={firstNameRef}
@@ -100,26 +129,37 @@ const UserList = (props:UserListProps) => {
                                 <td>
                                     <input 
                                         name="last name"
-                                        placeholder={user.lastName} 
-                                        value={userLastName === '' ? user.lastName : userLastName}
+                                        value={user.lastName}
                                         onChange={handleChange}
                                         ref={lastNameRef}
+                                        data-id={user.id}
                                     ></input>
                                 </td>
 
                                 <td>
                                     <input 
                                         name="email"
-                                        placeholder={user.email} 
-                                        value={userEmail === '' ? user.email : userEmail}
+                                        value={user.email}
                                         onChange={handleChange}
                                         ref={emailRef}
+                                        data-id={user.id}
                                     ></input>
                                 </td>
 
                                 <td>
-                                    <button className="submit-button">Submit</button>
-                                    <button>Cancel</button>
+                                    <button 
+                                        className="user-submit"
+                                        onClick={(e) => handleSubmit(e)}
+                                        data-id={user.id}
+                                    >
+                                        Submit
+                                    </button>
+                                    <button
+                                        className="user-cancel"
+                                        onClick={handleCancel}
+                                    >
+                                        Cancel
+                                    </button>
                                 </td>
                                 
                             </>
@@ -134,42 +174,3 @@ const UserList = (props:UserListProps) => {
 }
 
 export default UserList
-
-   // firstName:string
-    // setFirstName:React.Dispatch<React.SetStateAction<string>>
-    // lastName:string 
-    // setLastName:React.Dispatch<React.SetStateAction<string>>
-    // email:string 
-    // setEmail:React.Dispatch<React.SetStateAction<string>>
-
-{/* {edit &&
-                            <>
-                            <td><input name="first name" placeholder={user.firstName} value={user.firstName} onChange={handleChange}></input></td>
-                            <td><input placeholder={user.lastName} value={user.lastName}></input></td>
-                            <td><input placeholder={user.email} value={user.email}></input></td>
-                            </>
-                            } */}
-
-
-{/* <td>
-                            {!user.edit ? 
-                                user.firstName : 
-                                <input 
-                                    name="first name" 
-                                    placeholder={user.firstName} 
-                                    value={user.firstName} 
-                                    onChange={handleChange}
-                                ></input>
-                            }
-                            </td>
-                            <td>{user.lastName}</td>
-                            <td>{user.email}</td>
-                            <td>
-                                <button 
-                                    className="edit-button"
-                                    onClick={handleEdit}
-                                >
-                                    Edit
-                                </button>
-                                <button className="delete-button">Delete</button>
-                            </td> */}

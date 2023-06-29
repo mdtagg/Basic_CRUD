@@ -26,6 +26,20 @@ td input {
     width:140px;
 }
 
+td button {
+    height:25px;
+    width:75px;
+    color:white;
+}
+
+.user-submit {
+    background-color: green;
+}
+
+.user-cancel {
+    background-color: red;
+}
+
 .table-head {
     height:40px;
 }
