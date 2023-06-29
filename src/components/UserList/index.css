@@ -9,3 +9,11 @@ table thead {
     background:black;
     text-align: left;
 }
+
+tbody tr:nth-child(odd) {
+    background: rgb(76, 76, 76);
+}
+
+tbody tr:nth-child(even) {
+    background:black;
+}

@@ -4,12 +4,6 @@ import UserInputs from '../UserInputs'
 import UserList from '../UserList'
 import { useState } from 'react'
 
-type test = {
-  firstName:string 
-  lastName:string 
-  email:string
-}
-
 function App() {
 
   const [ users,setUsers ] = useState<any[]>([])
@@ -22,7 +16,9 @@ function App() {
       <UserInputs
         setUsers={setUsers}
       />
-      <UserList/>
+      <UserList
+        users={users}
+      />
     </>
   )
 }

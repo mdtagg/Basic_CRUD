@@ -1,6 +1,14 @@
 
 import './index.css'
-const UserList = () => {
+
+interface UserListProps {
+    users: any[]
+}
+
+const UserList = (props:UserListProps) => {
+
+    const { users } = props
+
     return (
         <table>
             <thead>
@@ -11,17 +19,24 @@ const UserList = () => {
                     <th>Actions</th>
                 </tr>
             </thead>
+            <tbody>
+                {users.map(user => {
+                    return (
+                        <tr>
+                            <td>{user.firstName}</td>
+                            <td>{user.lastName}</td>
+                            <td>{user.email}</td>
+                            <td>
+                                <button>Edit</button>
+                                <button>Delete</button>
+                            </td>
+                        </tr>
+                    )
+                })}
+                
+            </tbody>
         </table>
     )
 }
 
 export default UserList
-
-{/* <section>
-            <div className="list-titles">
-                <p>First Name</p>
-                <p>Last Name</p>
-                <p>Email</p>
-                <p>Actions</p>
-            </div>
-        </section> */}
