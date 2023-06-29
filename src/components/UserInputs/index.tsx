@@ -1,5 +1,6 @@
 import './index.css'
 import { useState } from 'react'
+import { v4 as uuidv4 } from 'uuid'
 // import { handleChange } from '../App/utils/handleInputChange'
 
 interface UserInputsProps {
@@ -42,7 +43,13 @@ const UserInputs = (props:UserInputsProps) => {
         setUsers((prev) => {
             return [
                 ...prev,
-                {firstName,lastName,email}
+                {
+                    firstName,
+                    lastName,
+                    email,
+                    edit:false,
+                    id:uuidv4()
+                }
             ]
         })
         setFirstName('')
@@ -84,6 +91,7 @@ const UserInputs = (props:UserInputsProps) => {
 
             ></input>
             <button
+                className="submit-button"
                 type='submit'
             >Submit</button>
         </form>

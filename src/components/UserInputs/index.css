@@ -15,7 +15,7 @@ form input {
     border:0;
 }
 
-form button {
+.submit-button {
     width:100px;
     height:30px;
     background:green;
