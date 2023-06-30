@@ -3,6 +3,19 @@ import './index.css'
 import { useState,useEffect,useRef } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 
+interface filteredUser {
+    edit:boolean 
+    email:string 
+    firstName:string 
+    id:string 
+    lastName:string
+}
+
+interface test {
+    filteredUser:filteredUser
+    id:string
+}
+
 interface UserListProps {
     users: any[]
     setUsers: React.Dispatch<React.SetStateAction<any[]>>
@@ -12,15 +25,32 @@ const UserList = (props:UserListProps) => {
 
     const { users,setUsers } = props
 
-    const [ currentInput,setCurrentInput ] = useState<null  | React.MutableRefObject<null>>(null)
+    const [ currentInput,setCurrentInput ] = useState<null  | React.MutableRefObject<HTMLInputElement | null>>(null)
 
-    const testRef = useRef(null)
+    // const [ original,setOriginal ] = useState<null | test>(null)
+    // console.log({original})
+
+    const [ filteredUser,setFilteredUser ] = useState<any>(null)
+    console.log({filteredUser})
+
     const firstNameRef = useRef(null)
     const lastNameRef = useRef(null)
     const emailRef = useRef(null)
 
     const handleEdit = (e:React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        console.log('edit fired')
         const { id } = e.target as HTMLButtonElement
+
+        const filteredUser = users.map(user => {
+            if(user.id === id) {
+                return user
+            }
+        })[0]
+
+        console.log(filteredUser)
+
+        // setOriginal({filteredUser,id})
+        setFilteredUser(filteredUser)
         setUsers(users.map(user => {
             if(user.id === id) {
                 user.edit = true
@@ -33,11 +63,9 @@ const UserList = (props:UserListProps) => {
         const { value, name } = e.target
         const { id } = e.target.dataset
 
-        // name === 'first name' ? setCurrentInput(firstNameRef) :
-        // name === 'last name' ? setCurrentInput(lastNameRef) :
-        // setCurrentInput(emailRef)
-
-        // name === 'first name' ? testRef.current = 
+        name === 'first name' ? setCurrentInput(firstNameRef) :
+        name === 'last name' ? setCurrentInput(lastNameRef) :
+        setCurrentInput(emailRef)
 
         setUsers(users.map(user => {
             if(user.id === id && name === 'first name') {
@@ -49,6 +77,24 @@ const UserList = (props:UserListProps) => {
             }
             return user
         }))
+    }
+
+    const handleCancel = () => {
+        // console.log('cancel fired')
+        setUsers(users.map(user => {
+            // console.log(original)
+            if(original.id === user.id) {
+                
+                // const updatedUser:any = original!.filteredUser
+                // console.log({updatedUser})
+                // updatedUser.edit = false
+                user = filteredUser
+            }
+            user.edit = false
+            return user
+        }))
+        setCurrentInput(null)
+        // setOriginal(null)
     }
 
     const handleDelete = (e:React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -67,28 +113,23 @@ const UserList = (props:UserListProps) => {
             }
             return user
         }))
-        // setCurrentInput(null)
-    }
-
-    const handleCancel = () => {
-
     }
 
     const handleInputClick = (e:React.MouseEvent<HTMLInputElement, MouseEvent>) => {
         
-        const target = e.target as HTMLInputElement
-        testRef.current = target
-        setCurrentInput(testRef)
+        // const target = e.target as HTMLInputElement
+        // testRef.current = target
+        // // testRef.current.focus()
+        // // console.log(testRef.current)
+        // setCurrentInput(testRef)
     }
 
-    useEffect(() => {
-        console.log(currentInput)
-        if(!currentInput) return 
-        // currentInput.current.focus()
-        // if(!testRef.current) return 
-        // console.log(testRef.current)
-        // console.log({firstNameRef})
-    },[users])
+    // useEffect(() => {
+    //     if(!currentInput) return 
+    //     const currentInputElement = currentInput.current as HTMLInputElement
+    //     currentInputElement.focus()
+        
+    // },[users])
 
     return (
         <table>
@@ -112,7 +153,7 @@ const UserList = (props:UserListProps) => {
                                 <td>
                                     <button 
                                         className="edit-button"
-                                        onClick={(e) => handleEdit(e)}
+                                        onClick={handleEdit}
                                         id={user.id}
                                     >
                                         Edit
@@ -133,7 +174,7 @@ const UserList = (props:UserListProps) => {
                                         value={user.firstName} 
                                         onChange={handleChange}
                                         data-id={user.id}
-                                        // ref={firstNameRef}
+                                        ref={firstNameRef}
                                         onClick={(e) => handleInputClick(e)}
                                     ></input>
                                 </td>
@@ -143,9 +184,10 @@ const UserList = (props:UserListProps) => {
                                         name="last name"
                                         value={user.lastName}
                                         onChange={handleChange}
-                                        // onBlur={handleFocusOut}
-                                        // ref={lastNameRef}
+                                        ref={lastNameRef}
                                         data-id={user.id}
+                                        onClick={(e) => handleInputClick(e)}
+
                                     ></input>
                                 </td>
 
@@ -154,8 +196,10 @@ const UserList = (props:UserListProps) => {
                                         name="email"
                                         value={user.email}
                                         onChange={handleChange}
-                                        // ref={emailRef}
+                                        ref={emailRef}
                                         data-id={user.id}
+                                        onClick={(e) => handleInputClick(e)}
+
                                     ></input>
                                 </td>
 
