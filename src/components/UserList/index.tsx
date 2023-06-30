@@ -41,6 +41,7 @@ const UserList = (props:UserListProps) => {
         console.log('edit fired')
         const { id } = e.target as HTMLButtonElement
 
+        //const filteredUser = user.filter(user => user.id === id)
         const filteredUser = users.map(user => {
             if(user.id === id) {
                 return user
@@ -79,23 +80,19 @@ const UserList = (props:UserListProps) => {
         }))
     }
 
-    const handleCancel = () => {
-        // console.log('cancel fired')
-        setUsers(users.map(user => {
-            // console.log(original)
-            if(original.id === user.id) {
+    // const handleCancel = () => {
+    //     setUsers(users.map(user => {
+    //         // console.log(original)
+    //         if(original.id === user.id) {
                 
-                // const updatedUser:any = original!.filteredUser
-                // console.log({updatedUser})
-                // updatedUser.edit = false
-                user = filteredUser
-            }
-            user.edit = false
-            return user
-        }))
-        setCurrentInput(null)
-        // setOriginal(null)
-    }
+    //             user = filteredUser
+    //         }
+    //         user.edit = false
+    //         return user
+    //     }))
+    //     setCurrentInput(null)
+    //     // setOriginal(null)
+    // }
 
     const handleDelete = (e:React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         const target = e.target as HTMLButtonElement
@@ -213,7 +210,7 @@ const UserList = (props:UserListProps) => {
                                     </button>
                                     <button
                                         className="user-cancel"
-                                        onClick={handleCancel}
+                                        // onClick={handleCancel}
                                     >
                                         Cancel
                                     </button>
