@@ -13,8 +13,8 @@ const UserList = (props:UserListProps) => {
     const { users,setUsers } = props
 
     const [ currentInput,setCurrentInput ] = useState<null  | React.MutableRefObject<null>>(null)
-    const [ cancel,setCancel ] = useState(users)
-    
+
+    const testRef = useRef(null)
     const firstNameRef = useRef(null)
     const lastNameRef = useRef(null)
     const emailRef = useRef(null)
@@ -33,9 +33,11 @@ const UserList = (props:UserListProps) => {
         const { value, name } = e.target
         const { id } = e.target.dataset
 
-        name === 'first name' ? setCurrentInput(firstNameRef) :
-        name === 'last name' ? setCurrentInput(lastNameRef) :
-        setCurrentInput(emailRef)
+        // name === 'first name' ? setCurrentInput(firstNameRef) :
+        // name === 'last name' ? setCurrentInput(lastNameRef) :
+        // setCurrentInput(emailRef)
+
+        // name === 'first name' ? testRef.current = 
 
         setUsers(users.map(user => {
             if(user.id === id && name === 'first name') {
@@ -65,18 +67,27 @@ const UserList = (props:UserListProps) => {
             }
             return user
         }))
-        setCurrentInput(null)
+        // setCurrentInput(null)
     }
 
     const handleCancel = () => {
 
     }
 
+    const handleInputClick = (e:React.MouseEvent<HTMLInputElement, MouseEvent>) => {
+        
+        const target = e.target as HTMLInputElement
+        testRef.current = target
+        setCurrentInput(testRef)
+    }
+
     useEffect(() => {
+        console.log(currentInput)
         if(!currentInput) return 
-        const currentInputElement = currentInput.current as unknown as HTMLInputElement
-        console.log(currentInputElement)
-        currentInputElement.focus()
+        // currentInput.current.focus()
+        // if(!testRef.current) return 
+        // console.log(testRef.current)
+        // console.log({firstNameRef})
     },[users])
 
     return (
@@ -122,7 +133,8 @@ const UserList = (props:UserListProps) => {
                                         value={user.firstName} 
                                         onChange={handleChange}
                                         data-id={user.id}
-                                        ref={firstNameRef}
+                                        // ref={firstNameRef}
+                                        onClick={(e) => handleInputClick(e)}
                                     ></input>
                                 </td>
 
@@ -131,7 +143,8 @@ const UserList = (props:UserListProps) => {
                                         name="last name"
                                         value={user.lastName}
                                         onChange={handleChange}
-                                        ref={lastNameRef}
+                                        // onBlur={handleFocusOut}
+                                        // ref={lastNameRef}
                                         data-id={user.id}
                                     ></input>
                                 </td>
@@ -141,7 +154,7 @@ const UserList = (props:UserListProps) => {
                                         name="email"
                                         value={user.email}
                                         onChange={handleChange}
-                                        ref={emailRef}
+                                        // ref={emailRef}
                                         data-id={user.id}
                                     ></input>
                                 </td>
