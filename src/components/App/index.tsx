@@ -10,7 +10,7 @@ function App() {
 
   return (
     <>
-      <h1>CRUD Application</h1>
+      <h1>Basic CRUD</h1>
       <UserInputs
         setUsers={setUsers}
       />

@@ -24,7 +24,6 @@ interface UserListProps {
 const UserList = (props:UserListProps) => {
 
     const { users, setUsers } = props
-    // console.log({users})
 
     const [ currentInput,setCurrentInput ] = useState<null  | React.MutableRefObject<HTMLInputElement | null>>(null)
     const [ original,setOriginal ] = useState<null | test>(null)
@@ -37,18 +36,14 @@ const UserList = (props:UserListProps) => {
         const { id } = e.target as HTMLButtonElement
 
         if(original) {
-            // handleCancel()
-            // console.log({users,currentInput,original})
            setUsers(users.map(user => {
             if(user.edit) {
                 user.edit = false
             }
             return user
            }))
-           console.log(users)
         }
         
-    
         const findUser = users.find(user => user.id === id)
         const filteredUser = { ...findUser }
       
@@ -82,7 +77,6 @@ const UserList = (props:UserListProps) => {
     }
 
     const handleCancel = () => {
-        console.log('test')
         setUsers(users.map(user => {
             if(user.id === original!.id) {
                 return original!.filteredUser
@@ -91,7 +85,6 @@ const UserList = (props:UserListProps) => {
         }))
         setCurrentInput(null)
         setOriginal(null)
-        // console.log({users})
     }
 
     const handleDelete = (e:React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -112,12 +105,6 @@ const UserList = (props:UserListProps) => {
         }))
         setCurrentInput(null)
         setOriginal(null)
-    }
-
-    const handleInputClick = (e:React.MouseEvent<HTMLInputElement, MouseEvent>) => {
-        
-        // if(!currentInput) return
-        // setCurrentInput()
     }
 
     useEffect(() => {
@@ -146,7 +133,7 @@ const UserList = (props:UserListProps) => {
                                 <td>{user.firstName}</td>
                                 <td>{user.lastName}</td>
                                 <td>{user.email}</td>
-                                <td>
+                                <td className="action-buttons">
                                     <button 
                                         className="edit-button"
                                         onClick={handleEdit}
@@ -171,7 +158,6 @@ const UserList = (props:UserListProps) => {
                                         onChange={handleChange}
                                         data-id={user.id}
                                         ref={firstNameRef}
-                                        onClick={(e) => handleInputClick(e)}
                                     ></input>
                                 </td>
 
@@ -182,8 +168,6 @@ const UserList = (props:UserListProps) => {
                                         onChange={handleChange}
                                         ref={lastNameRef}
                                         data-id={user.id}
-                                        onClick={(e) => handleInputClick(e)}
-
                                     ></input>
                                 </td>
 
@@ -194,12 +178,10 @@ const UserList = (props:UserListProps) => {
                                         onChange={handleChange}
                                         ref={emailRef}
                                         data-id={user.id}
-                                        onClick={(e) => handleInputClick(e)}
-
                                     ></input>
                                 </td>
 
-                                <td>
+                                <td className="action-buttons">
                                     <button 
                                         className="user-submit"
                                         onClick={(e) => handleSubmit(e)}
@@ -214,7 +196,6 @@ const UserList = (props:UserListProps) => {
                                         Cancel
                                     </button>
                                 </td>
-                                
                             </>
                             }
                         </tr>
