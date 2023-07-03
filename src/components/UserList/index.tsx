@@ -23,35 +23,23 @@ interface UserListProps {
 
 const UserList = (props:UserListProps) => {
 
-    const { users,setUsers } = props
+    const { users, setUsers } = props
 
     const [ currentInput,setCurrentInput ] = useState<null  | React.MutableRefObject<HTMLInputElement | null>>(null)
-
-    // const [ original,setOriginal ] = useState<null | test>(null)
-    // console.log({original})
-
-    const [ filteredUser,setFilteredUser ] = useState<any>(null)
-    console.log({filteredUser})
+    const [ original,setOriginal ] = useState<null | test>(null)
+    console.log({original})
 
     const firstNameRef = useRef(null)
     const lastNameRef = useRef(null)
     const emailRef = useRef(null)
 
     const handleEdit = (e:React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        console.log('edit fired')
         const { id } = e.target as HTMLButtonElement
 
-        //const filteredUser = user.filter(user => user.id === id)
-        const filteredUser = users.map(user => {
-            if(user.id === id) {
-                return user
-            }
-        })[0]
-
-        console.log(filteredUser)
-
-        // setOriginal({filteredUser,id})
-        setFilteredUser(filteredUser)
+        const findUser = users.find(user => user.id === id)
+        const filteredUser = { ...findUser }
+      
+        setOriginal({filteredUser,id})
         setUsers(users.map(user => {
             if(user.id === id) {
                 user.edit = true
@@ -80,19 +68,16 @@ const UserList = (props:UserListProps) => {
         }))
     }
 
-    // const handleCancel = () => {
-    //     setUsers(users.map(user => {
-    //         // console.log(original)
-    //         if(original.id === user.id) {
-                
-    //             user = filteredUser
-    //         }
-    //         user.edit = false
-    //         return user
-    //     }))
-    //     setCurrentInput(null)
-    //     // setOriginal(null)
-    // }
+    const handleCancel = () => {
+        setUsers(users.map(user => {
+            if(user.id === original!.id) {
+                return original!.filteredUser
+            }
+            return user
+        }))
+        setCurrentInput(null)
+        setOriginal(null)
+    }
 
     const handleDelete = (e:React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         const target = e.target as HTMLButtonElement
@@ -210,7 +195,7 @@ const UserList = (props:UserListProps) => {
                                     </button>
                                     <button
                                         className="user-cancel"
-                                        // onClick={handleCancel}
+                                        onClick={handleCancel}
                                     >
                                         Cancel
                                     </button>
