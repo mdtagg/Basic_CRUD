@@ -5,6 +5,7 @@ table {
     border-spacing:0;
     border:1px solid white;
     border-radius:2px;
+    margin-bottom:70px;
 }
 
 table thead {
