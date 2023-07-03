@@ -1,9 +1,11 @@
 
 import './index.css'
-import { useState,useEffect,useRef } from 'react'
+import UserData from '../UserData'
+import UserChange from '../UserChange'
+import { useState,useRef } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 
-interface filteredUser {
+export interface UserType {
     edit:boolean 
     email:string 
     firstName:string 
@@ -11,8 +13,8 @@ interface filteredUser {
     lastName:string
 }
 
-interface test {
-    filteredUser:filteredUser
+export interface OriginalType {
+    filteredUser:UserType
     id:string
 }
 
@@ -25,94 +27,12 @@ const UserList = (props:UserListProps) => {
 
     const { users, setUsers } = props
 
+    const [ original,setOriginal ] = useState<null | OriginalType>(null)
     const [ currentInput,setCurrentInput ] = useState<null  | React.MutableRefObject<HTMLInputElement | null>>(null)
-    const [ original,setOriginal ] = useState<null | test>(null)
 
     const firstNameRef = useRef(null)
     const lastNameRef = useRef(null)
     const emailRef = useRef(null)
-
-    const handleEdit = (e:React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        const { id } = e.target as HTMLButtonElement
-
-        if(original) {
-           setUsers(users.map(user => {
-            if(user.edit) {
-                user.edit = false
-            }
-            return user
-           }))
-        }
-        
-        const findUser = users.find(user => user.id === id)
-        const filteredUser = { ...findUser }
-      
-        setOriginal({filteredUser,id})
-        setUsers(users.map(user => {
-            if(user.id === id) {
-                user.edit = true
-            }
-            return user
-        }))
-    }
-
-    const handleChange = (e:React.ChangeEvent<HTMLInputElement>) => {
-        const { value, name } = e.target
-        const { id } = e.target.dataset
-
-        name === 'first name' ? setCurrentInput(firstNameRef) :
-        name === 'last name' ? setCurrentInput(lastNameRef) :
-        setCurrentInput(emailRef)
-
-        setUsers(users.map(user => {
-            if(user.id === id && name === 'first name') {
-                user.firstName = value
-            }else if(user.id === id && name === 'last name') {
-                user.lastName = value
-            }else if(user.id === id && name === 'email') {
-                user.email = value
-            }
-            return user
-        }))
-    }
-
-    const handleCancel = () => {
-        setUsers(users.map(user => {
-            if(user.id === original!.id) {
-                return original!.filteredUser
-            }
-            return user
-        }))
-        setCurrentInput(null)
-        setOriginal(null)
-    }
-
-    const handleDelete = (e:React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        const target = e.target as HTMLButtonElement
-        const { id } = target.dataset
-        const filteredUsers = users.filter(user => user.id !== id)
-        setUsers(filteredUsers)
-    }
-
-    const handleSubmit = (e:React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        const target = e.target as HTMLButtonElement
-        const { id } = target.dataset
-        setUsers(users.map(user => {
-            if(user.id === id) {
-                user.edit = false
-            }
-            return user
-        }))
-        setCurrentInput(null)
-        setOriginal(null)
-    }
-
-    useEffect(() => {
-        if(!currentInput) return 
-        const currentInputElement = currentInput.current as HTMLInputElement
-        currentInputElement.focus()
-        
-    },[users])
 
     return (
         <table>
@@ -127,81 +47,35 @@ const UserList = (props:UserListProps) => {
             <tbody>
                 {users.map(user => {
                     return (
-                        <tr key={uuidv4()} id={uuidv4()}>
+                        <tr 
+                            key={uuidv4()} 
+                            id={uuidv4()}
+                        >
                             {!user.edit ? 
-                            <>
-                                <td>{user.firstName}</td>
-                                <td>{user.lastName}</td>
-                                <td>{user.email}</td>
-                                <td className="action-buttons">
-                                    <button 
-                                        className="edit-button"
-                                        onClick={handleEdit}
-                                        id={user.id}
-                                    >
-                                        Edit
-                                    </button>
-                                    <button 
-                                        className="delete-button"
-                                        onClick={handleDelete}
-                                        data-id={user.id}
-                                    >
-                                        Delete
-                                    </button>
-                                </td>
-                            </> :
-                            <>
-                                <td>
-                                    <input 
-                                        name="first name" 
-                                        value={user.firstName} 
-                                        onChange={handleChange}
-                                        data-id={user.id}
-                                        ref={firstNameRef}
-                                    ></input>
-                                </td>
-
-                                <td>
-                                    <input 
-                                        name="last name"
-                                        value={user.lastName}
-                                        onChange={handleChange}
-                                        ref={lastNameRef}
-                                        data-id={user.id}
-                                    ></input>
-                                </td>
-
-                                <td>
-                                    <input 
-                                        name="email"
-                                        value={user.email}
-                                        onChange={handleChange}
-                                        ref={emailRef}
-                                        data-id={user.id}
-                                    ></input>
-                                </td>
-
-                                <td className="action-buttons">
-                                    <button 
-                                        className="user-submit"
-                                        onClick={(e) => handleSubmit(e)}
-                                        data-id={user.id}
-                                    >
-                                        Submit
-                                    </button>
-                                    <button
-                                        className="user-cancel"
-                                        onClick={handleCancel}
-                                    >
-                                        Cancel
-                                    </button>
-                                </td>
-                            </>
+                                <UserData
+                                    users={users}
+                                    user={user}
+                                    setUsers={setUsers}
+                                    original={original}
+                                    setOriginal={setOriginal}
+                                />
+                                :
+                                <UserChange
+                                    users={users}
+                                    setUsers={setUsers}
+                                    user={user}
+                                    original={original}
+                                    setOriginal={setOriginal}
+                                    firstNameRef={firstNameRef}
+                                    lastNameRef={lastNameRef}
+                                    emailRef={emailRef}
+                                    currentInput={currentInput}
+                                    setCurrentInput={setCurrentInput}
+                                />
                             }
                         </tr>
                     )
                 })}
-                
             </tbody>
         </table>
     )
