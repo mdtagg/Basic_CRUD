@@ -24,10 +24,10 @@ interface UserListProps {
 const UserList = (props:UserListProps) => {
 
     const { users, setUsers } = props
+    // console.log({users})
 
     const [ currentInput,setCurrentInput ] = useState<null  | React.MutableRefObject<HTMLInputElement | null>>(null)
     const [ original,setOriginal ] = useState<null | test>(null)
-    console.log({original})
 
     const firstNameRef = useRef(null)
     const lastNameRef = useRef(null)
@@ -36,6 +36,19 @@ const UserList = (props:UserListProps) => {
     const handleEdit = (e:React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         const { id } = e.target as HTMLButtonElement
 
+        if(original) {
+            // handleCancel()
+            // console.log({users,currentInput,original})
+           setUsers(users.map(user => {
+            if(user.edit) {
+                user.edit = false
+            }
+            return user
+           }))
+           console.log(users)
+        }
+        
+    
         const findUser = users.find(user => user.id === id)
         const filteredUser = { ...findUser }
       
@@ -69,6 +82,7 @@ const UserList = (props:UserListProps) => {
     }
 
     const handleCancel = () => {
+        console.log('test')
         setUsers(users.map(user => {
             if(user.id === original!.id) {
                 return original!.filteredUser
@@ -77,6 +91,7 @@ const UserList = (props:UserListProps) => {
         }))
         setCurrentInput(null)
         setOriginal(null)
+        // console.log({users})
     }
 
     const handleDelete = (e:React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -95,23 +110,22 @@ const UserList = (props:UserListProps) => {
             }
             return user
         }))
+        setCurrentInput(null)
+        setOriginal(null)
     }
 
     const handleInputClick = (e:React.MouseEvent<HTMLInputElement, MouseEvent>) => {
         
-        // const target = e.target as HTMLInputElement
-        // testRef.current = target
-        // // testRef.current.focus()
-        // // console.log(testRef.current)
-        // setCurrentInput(testRef)
+        // if(!currentInput) return
+        // setCurrentInput()
     }
 
-    // useEffect(() => {
-    //     if(!currentInput) return 
-    //     const currentInputElement = currentInput.current as HTMLInputElement
-    //     currentInputElement.focus()
+    useEffect(() => {
+        if(!currentInput) return 
+        const currentInputElement = currentInput.current as HTMLInputElement
+        currentInputElement.focus()
         
-    // },[users])
+    },[users])
 
     return (
         <table>
