@@ -2,7 +2,7 @@
 import { UserType } from "../UserList"
 import { OriginalType } from "../UserList"
 
-interface UserDataProps {
+interface DataRowProps {
     users:any[]
     user:UserType
     setUsers:React.Dispatch<React.SetStateAction<any[]>>
@@ -10,9 +10,9 @@ interface UserDataProps {
     setOriginal: React.Dispatch<React.SetStateAction<OriginalType | null>>
 }
 
-const UserData = (props:UserDataProps) => {
+const DataRow = (props:DataRowProps) => {
 
-    const { users,setUsers,user,original,setOriginal } = props
+    const { users,setUsers,original,user,setOriginal } = props
 
     const handleEdit = (e:React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         const { id } = e.target as HTMLButtonElement
@@ -41,6 +41,13 @@ const UserData = (props:UserDataProps) => {
     const handleDelete = (e:React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         const target = e.target as HTMLButtonElement
         const { id } = target.dataset
+        let testArr:any[] = []
+        users.forEach(user => {
+            if(user.id !== id) {
+                testArr.push(user)
+            }
+        })
+        console.log(testArr)
         const filteredUsers = users.filter(user => user.id !== id)
         setUsers(filteredUsers)
     }
@@ -70,4 +77,4 @@ const UserData = (props:UserDataProps) => {
     )
 }
 
-export default UserData
+export default DataRow

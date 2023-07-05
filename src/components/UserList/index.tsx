@@ -1,7 +1,7 @@
 
 import './index.css'
-import UserData from '../UserData'
-import UserChange from '../UserChange'
+import UserData from '../DataRow'
+import UserChange from '../ChangeRow'
 import { useState,useRef } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 

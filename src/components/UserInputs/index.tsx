@@ -61,6 +61,7 @@ const UserInputs = (props:UserInputsProps) => {
                 value={firstName}
                 onChange={(e) => handleChange(e)}
             ></input>
+
             <label htmlFor="lName">Last Name</label>
             <input 
                 id="lName" 
@@ -71,6 +72,7 @@ const UserInputs = (props:UserInputsProps) => {
                 onChange={(e) => handleChange(e)}
 
             ></input>
+
             <label htmlFor="email">Email</label>
             <input 
                 id="email" 
@@ -81,10 +83,13 @@ const UserInputs = (props:UserInputsProps) => {
                 onChange={(e) => handleChange(e)}
 
             ></input>
+
             <button
                 className="submit-button"
                 type='submit'
-            >Submit</button>
+            >
+                Submit
+            </button>
         </form>
     )
 }

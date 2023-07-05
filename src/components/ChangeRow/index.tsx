@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { UserType } from '../UserList'
 import { OriginalType } from '../UserList'
 
-interface UserChangeProps {
+interface ChangeRowProps {
     users:any[]
     setUsers:React.Dispatch<React.SetStateAction<any[]>>
     user:UserType 
@@ -15,7 +15,7 @@ interface UserChangeProps {
     setCurrentInput:React.Dispatch<React.SetStateAction<React.MutableRefObject<HTMLInputElement | null> | null>>
 }
 
-const UserChange = (props:UserChangeProps) => {
+const ChangeRow = (props:ChangeRowProps) => {
 
     const { users,setUsers,user,original,setOriginal,firstNameRef,lastNameRef,emailRef,currentInput,setCurrentInput } = props
 
@@ -127,4 +127,4 @@ const UserChange = (props:UserChangeProps) => {
     )
 }
 
-export default UserChange
+export default ChangeRow
